@@ -2,6 +2,7 @@ include ../Makefile.am
 
 KERNEL_VERSION=user-mode-linux-3.2-2um
 KERNEL_NUMBER=3.2.51
+OVS_BRANCH=1.10
 
 BUILD_DIR=build
 NETKIT_DIR=${BUILD_DIR}/netkit-ng
@@ -30,6 +31,14 @@ ${DEBIAN_PACKAGE_DIR}/debian/user-mode-linux/usr/bin/linux.uml: ${DEBIAN_PACKAGE
 	sed 's/CONFIG_LOCALVERSION=.*/CONFIG_LOCALVERSION="-netkit-ng-$(NETKIT_KERNEL_RELEASE)"/' config.i386 > ${BUILD_DIR}/${KERNEL_VERSION}/config.${SUBARCH}
 	cp patches/* ${DEBIAN_PACKAGE_DIR}/debian/patches/
 	cd ${DEBIAN_PACKAGE_DIR} ; dpkg-buildpackage -rfakeroot -nc -uc
+	#BEGIN
+	#rm -rf ovs-branch-${OVS_BRANCH}
+	cd ${BUILD_DIR} ; wget https://github.com/openvswitch/ovs/archive/branch-${OVS_BRANCH}.zip
+	cd ${BUILD_DIR} ; unzip branch-${OVS_BRANCH}.zip
+	cd ${BUILD_DIR}/ovs-branch-${OVS_BRANCH}; ./boot.sh;	./configure --with-linux=../${KERNEL_VERSION}/linux-source-3.2 KARCH=um;ARCH=um make
+	#mkdir ${KERNEL_DIR}/modules/openvswitch ; cp ${BUILD_DIR}/ovs-branch-${OVS_BRANCH}/datapath/linux/openvswitch.ko ${KERNEL_DIR}/modules/openvswitch/openvswitch.ko
+	#END
+
 
 ../${KERNEL_ARCHIVE_FILE}: ${DEBIAN_PACKAGE_DIR}/debian/user-mode-linux/usr/bin/linux.uml
 	mkdir -p ${KERNEL_DIR}
@@ -37,6 +46,9 @@ ${DEBIAN_PACKAGE_DIR}/debian/user-mode-linux/usr/bin/linux.uml: ${DEBIAN_PACKAGE
 	cd ${KERNEL_DIR} ; ln -s netkit-kernel-${SUBARCH}-${KERNEL_NUMBER}-${NETKIT_KERNEL_RELEASE} netkit-kernel
 	mkdir -p ${KERNEL_DIR}/modules/
 	cp -r ${DEBIAN_PACKAGE_DIR}/debian/user-mode-linux/usr/lib/ ${KERNEL_DIR}/modules/
+	#BEGIN
+	mkdir ${KERNEL_DIR}/modules/openvswitch ; cp ${BUILD_DIR}/ovs-branch-${OVS_BRANCH}/datapath/linux/openvswitch.ko ${KERNEL_DIR}/modules/openvswitch/openvswitch.ko
+	#END
 	echo "Netkit-NG kernel version $(NETKIT_KERNEL_RELEASE)" > ${KERNEL_DIR}/netkit-kernel-version
 	cd ${BUILD_DIR}/ ; tar -cvjf ../../${KERNEL_ARCHIVE_FILE} netkit-ng/
 
