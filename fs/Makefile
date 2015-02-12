@@ -7,6 +7,7 @@ DEBOOTSTRAP_ARCHIVE=${CACHE_DIR}/debootstrap-cache.tgz
 NETKIT_DIR=${BUILD_DIR}/netkit-ng
 FS_DIR=${NETKIT_DIR}/fs
 MODULES_PATH=../kernel/build/netkit-ng/kernel/modules/lib/uml/modules/
+NAMESERVER=$(shell grep nameserver /etc/resolv.conf | cut -d\  -f2 | tail -n 1)
 
 default: ${FINAL_ARCHIVE}
 
@@ -26,6 +27,7 @@ init: clean
 ${FINAL_ARCHIVE}: init ${DEBOOTSTRAP_ARCHIVE} ${MODULES_PATH}
 	cp -r ${MODULES_PATH} ${BUILD_DIR}
 	echo "Netkit-NG filesystem version ${NETKIT_FS_RELEASE}" > ${FS_DIR}/netkit-filesystem-version
+	sed -i "s/^nameserver=\([0-9]\{1,3\}\.\)\{3\}[0-9]\{1,3\}/nameserver=${NAMESERVER}/" rootstrap.conf
 	rootstrap  ${FS_DIR}/netkit-fs-${SUBARCH}-${NETKIT_FS_RELEASE}
 	cd ${FS_DIR} ; ln -s netkit-fs-${SUBARCH}-${NETKIT_FS_RELEASE} netkit-fs
 	mv ${FS_DIR}/netkit-fs-${SUBARCH}-${NETKIT_FS_RELEASE} ${FS_DIR}/netkit-fs-${SUBARCH}-${NETKIT_FS_RELEASE}.old
@@ -37,3 +39,4 @@ ${DEBOOTSTRAP_ARCHIVE}:
 	mkdir -p ${BUILD_DIR}/debootstrap/
 	mkdir -p ${CACHE_DIR}
 	debootstrap --make-tarball=${DEBOOTSTRAP_ARCHIVE} wheezy ${BUILD_DIR}/debootstrap/ http://ftp.fr.debian.org/debian
+
