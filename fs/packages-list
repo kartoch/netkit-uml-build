@@ -49,6 +49,7 @@ openssh-server
 openssl
 strongswan
 openvpn
+openvswitch-switch
 pdns-recursor
 ppp
 pppoe

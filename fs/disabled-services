@@ -13,6 +13,7 @@ mrd6
 mtab.sh
 openbsd-inetd
 openvpn
+openvswitch-switch
 pdns-recursor
 pipsecd
 proftpd
