@@ -46,9 +46,9 @@ ${DEBIAN_PACKAGE_DIR}/debian/user-mode-linux/usr/bin/linux.uml: ${DEBIAN_PACKAGE
 	mkdir -p ${KERNEL_DIR}/modules/
 	cp -r ${DEBIAN_PACKAGE_DIR}/debian/user-mode-linux/usr/lib/ ${KERNEL_DIR}/modules/
 	#BEGIN
-	mkdir ${KERNEL_DIR}/modules/lib/uml/modules/${KERNEL_NUMBER}/kernel/net/openvswitch ; cp ${BUILD_DIR}/ovs-branch-${OVS_BRANCH}/datapath/linux/openvswitch.ko ${KERNEL_DIR}/modules/lib/uml/modules/${KERNEL_NUMBER}/kernel/net/openvswitch/openvswitch.ko
+	mkdir ${KERNEL_DIR}/modules/lib/uml/modules/${KERNEL_NUMBER}-netkit-ng-${NETKIT_KERNEL_RELEASE}/kernel/net/openvswitch ; cp ${BUILD_DIR}/ovs-branch-${OVS_BRANCH}/datapath/linux/openvswitch.ko ${KERNEL_DIR}/modules/lib/uml/modules/${KERNEL_NUMBER}-netkit-ng-${NETKIT_KERNEL_RELEASE}/kernel/net/openvswitch/openvswitch.ko
 	ln -s ${WD}/${KERNEL_DIR}/modules/lib/uml/modules ${KERNEL_DIR}/modules/lib/modules
-	depmod -b ${KERNEL_DIR}/modules ${KERNEL_NUMBER}
+	depmod -b ${KERNEL_DIR}/modules ${KERNEL_NUMBER}-netkit-ng-${NETKIT_KERNEL_RELEASE}
 	#sleep 99999
 	#END
 	echo "Netkit-NG kernel version $(NETKIT_KERNEL_RELEASE)" > ${KERNEL_DIR}/netkit-kernel-version
