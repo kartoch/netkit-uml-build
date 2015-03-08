@@ -46,6 +46,15 @@ if test "$install" = "true"; then
     undivert $TARGET/sbin/start-stop-daemon
 fi
 
+# install custom deb files
+if test "$install" = "true"; then
+    divert $TARGET/sbin/start-stop-daemon
+    find $WORKDIR/custom-deb/ -name \*.deb -exec cp '{}' $TARGET/tmp/ \;
+    chroot $TARGET find /tmp/ -name \*.deb -exec dpkg --install '{}' \;
+    fuser -k -v -m $TARGET || true
+    undivert $TARGET/sbin/start-stop-daemon
+fi
+
 # copy netkit filesystem files
 tar -C $WORKDIR/filesystem-tweaks -c . | tar -C $TARGET -x
 

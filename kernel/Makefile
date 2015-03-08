@@ -2,7 +2,7 @@ include ../Makefile.am
 
 KERNEL_VERSION=user-mode-linux-3.2-2um
 KERNEL_NUMBER=3.2.65
-OVS_BRANCH=1.10
+OVS_BRANCH=2.3
 
 BUILD_DIR=build
 NETKIT_DIR=${BUILD_DIR}/netkit-ng
