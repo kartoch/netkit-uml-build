@@ -47,9 +47,10 @@ nmap
 openssh-client
 openssh-server
 openssl
-strongswan
+#strongswan
 openvpn
 openvswitch-switch
+openvswitch-ipsec
 pdns-recursor
 ppp
 pppoe
