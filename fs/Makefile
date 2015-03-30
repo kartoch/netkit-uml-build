@@ -36,6 +36,7 @@ ${FINAL_ARCHIVE}: init ${DEBOOTSTRAP_ARCHIVE} ${MODULES_PATH}
 	cd ${BUILD_DIR}/ ; tar -cvSjf ../${FINAL_ARCHIVE} netkit-ng/
 
 ${DEBOOTSTRAP_ARCHIVE}:
+	apt-get install debootstrap rootstrap
 	mkdir -p ${BUILD_DIR}/debootstrap/
 	mkdir -p ${CACHE_DIR}
 	debootstrap --make-tarball=${DEBOOTSTRAP_ARCHIVE} wheezy ${BUILD_DIR}/debootstrap/ http://ftp.fr.debian.org/debian

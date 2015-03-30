@@ -34,6 +34,7 @@ ${DEBIAN_PACKAGE_DIR}/debian/user-mode-linux/usr/bin/linux.uml: ${DEBIAN_PACKAGE
 	cd ${DEBIAN_PACKAGE_DIR} ; dpkg-buildpackage -rfakeroot -nc -uc
 	#BEGIN
 	cd ${BUILD_DIR} ; wget https://github.com/openvswitch/ovs/archive/branch-${OVS_BRANCH}.zip
+	cd ${BUILD_DIR} ; apt-get install unzip autoconf build-essential libtool
 	cd ${BUILD_DIR} ; unzip branch-${OVS_BRANCH}.zip
 	cd ${BUILD_DIR}/ovs-branch-${OVS_BRANCH}; ./boot.sh;	./configure --with-linux=../${KERNEL_VERSION}/linux-source-3.2 KARCH=um;ARCH=um make
 	#END
